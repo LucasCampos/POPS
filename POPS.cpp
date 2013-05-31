@@ -290,25 +290,7 @@ void connectPoly(ImageWriter *writer, std::vector<PolyReader>& poly, double minD
 	}
 }
 
-/*
-void SimpleHelp() {
 
-	cout << "\nLucas Campos, Laboratório de Computação Científica, Departamento de Física, UFPE\n";
-	cout << "Em caso de bugs, por favor mande um email para lqcc@df.ufpe.br\n\n";  
-	cout << "Versao 2.00Alpha\n\n";	
-	std::cout << "Comandos: \n\n";
-	std::cout << " -h\n\tMostra o diálogo de ajuda\n\n"; 
-	std::cout << " -s filename Quantidade\n\tAdiciona um novo tipo de quadrado, com Quantidade quadrados por frame. A cada quadrado deve ser associado 5 linhas do arquivo\n\n";
-	std::cout << " -t filename Quantidade\n\tAdiciona um novo tipo de triangulo, com Quantidade triangulos por frame. A cada triangulo deve ser associado 4 linhas do arquivo\n\n";
-	std::cout << " -c filename Quantidade Raio\nAdiciona um novo tipo de circulo, com Quantidade circulos por frame. A cada circulo deve ser associado 1 linha do arquivo\t\n\n";
-	std::cout << " -o Name\n\tEscolhe o nome do arquivo de saida\n\n";
-	std::cout << " -f Frame\n\tEscolhe a resolucao da imagem. Por padrao, 1920x1920\n\n";
-	std::cout << " -b Box\n\tEscolhe o tamanho da caixa. Por padrao e 10\n\n";
-	std::cout << " -r Distance\n\tDesenha uma linha entre particulas com distancia menor que Distance\n\n";
-	std::cout << " -e Extended Box\n\tA caixa vai de 0 a box, ao inves de -box a box.\n\n";
-	std::cout << " -w width\n\tEscolha a grossura das linhas. Por padrao, 5.\n\n";
-}
-*/
 void SimpleHelp() {
 	
 	cout << "If you find any bug, please write to lqcc@df.ufpe.br\n\n";
