@@ -94,11 +94,11 @@ struct PolyReader {
 //Variaveis Globais
 char* font =  (char*)"/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf";
 
-void Normaliza(ImageWriter* writer, std::vector<PolyReader>& poly, bool extendedBox);
-void PegaParametros(int argc, char* argv[], ImageWriter** writer, std::vector<PolyReader>& poly, bool& drawDistance, double& minDist, bool& extendedBox);
+void Normalize(ImageWriter* writer, std::vector<PolyReader>& poly, bool extendedBox);
+void TakeParameters(int argc, char* argv[], ImageWriter** writer, std::vector<PolyReader>& poly, bool& drawDistance, double& minDist, bool& extendedBox);
 void Draw(ImageWriter* writer, std::vector<PolyReader>& poly, bool extendedBox, bool drawDistance, double minDist, double lineWidth);
 void connectPoly(ImageWriter *writer, std::vector<PolyReader>& poly, double minDist, double lineWidth);
-void AjudaSimples();
+void SimpleHelp();
 
 int main(int argc, char* argv[])
 {
@@ -107,13 +107,13 @@ int main(int argc, char* argv[])
 	bool drawDistance = false;
 	double minDist = 1e9;
 	ImageWriter* writer;
-	PegaParametros(argc, argv, &writer, poly, drawDistance, minDist, extendedBox);
+	TakeParameters(argc, argv, &writer, poly, drawDistance, minDist, extendedBox);
 	writer->printname();
 	Draw(writer, poly, extendedBox, drawDistance, minDist, 0.1);
 	writer->close();
 }
 
-void Normaliza(ImageWriter* writer, std::vector<PolyReader>& poly, bool extendedBox) {
+void Normalize(ImageWriter* writer, std::vector<PolyReader>& poly, bool extendedBox) {
 	double factor = writer->NormalizingFactor();
 	double center = writer->Center();
 
@@ -126,15 +126,15 @@ void Normaliza(ImageWriter* writer, std::vector<PolyReader>& poly, bool extended
 	}
 };
 
-void PegaParametros(int argc, char* argv[], ImageWriter** writer, std::vector<PolyReader>& poly, bool& drawDistance, double& minDist, bool& extendedBox){
+void TakeParameters (int argc, char* argv[], ImageWriter** writer, std::vector<PolyReader>& poly, bool& drawDistance, double& minDist, bool& extendedBox){
 
-	bool temUm = false;
+	bool hasOne = false;
 	std::string nameOutput;
 	double box;
 	double resolution=1920;
 
 	if (argc == 1) {
-		AjudaSimples();
+		SimpleHelp();
 		exit(0);
 	}
 
@@ -153,7 +153,7 @@ void PegaParametros(int argc, char* argv[], ImageWriter** writer, std::vector<Po
 
 			poly.push_back(PolyReader(4, file, true,p));
 
-			temUm = true;
+			hasOne = true;
 
 		} else if (string(argv[i]) == "-t"){
 			char* file = argv[i+1];
@@ -169,7 +169,7 @@ void PegaParametros(int argc, char* argv[], ImageWriter** writer, std::vector<Po
 
 			poly.push_back(PolyReader(3, file, true,p));
 
-			temUm = true;
+			hasOne = true;
 
 		} else if (string(argv[i]) == "-c"){
 			char* file = argv[i+1];
@@ -186,33 +186,33 @@ void PegaParametros(int argc, char* argv[], ImageWriter** writer, std::vector<Po
 
 			poly.push_back(PolyReader(0, file, true,p));
 	
-			temUm = true;
+			hasOne = true;
 
 		} else if (string(argv[i]) == "-o") {
 
 			if (argc <= i+1) {
-				cout << "Parametros -o incompletos\n";
+				cout << "Incomplete parameters for -o \n";
 				exit(1);
 			}
 			nameOutput= std::string(argv[i+1]);	
 		} else if (string(argv[i]) == "-f") {
 
 			if (argc <= i+1) {
-				cout << "Parametros -f incompletos\n";
+				cout << "Incomplete parameters for -f \n";
 				exit(1);
 			}
 			resolution = atoi(argv[i+1]);	
 		} else if (string(argv[i]) == "-b") {
 
 			if (argc <= i+1) {
-				cout << "Parametros -b incompletos\n";
+				cout << "Incomplete parameters for -b \n";
 				exit(1);
 			}
 			box = atof(argv[i+1]);	
 		} else if (string(argv[i]) == "-r") {
 
 			if (argc <= i+1) {
-				cout << "Parametros -r incompletos\n";
+				cout << "Incomplete parameters for -r \n";
 				exit(1);
 			}
 
@@ -221,13 +221,13 @@ void PegaParametros(int argc, char* argv[], ImageWriter** writer, std::vector<Po
 		} else if (string(argv[i]) == "-w") {
 
 			if (argc <= i+1) {
-				cout << "Parametros -r incompletos\n";
+				cout << "Incomplete parameters for -r \n";
 				exit(1);
 			}
 
 			lineWidth = atoi(argv[i+1]);
 		} else if (string(argv[i]) == "-h") {
-			AjudaSimples();
+			SimpleHelp();
 			exit(0);
 		} else if (string(argv[i]) == "-e"){
 			extendedBox = false;
@@ -240,8 +240,8 @@ void PegaParametros(int argc, char* argv[], ImageWriter** writer, std::vector<Po
 			aEscrever.push_back(nome);
 		}*/
 	}
-	if (!temUm) {
-		AjudaSimples();
+	if (!hasOne) {
+		SimpleHelp();
 		exit(1);
 	}
 
@@ -263,7 +263,7 @@ void Draw(ImageWriter* writer, std::vector<PolyReader>& poly, bool extendedBox, 
 	for (int i=0; i<poly.size(); i++) 
 		poly[i].updatePoly();
 
-	Normaliza(writer, poly, extendedBox);
+	Normalize(writer, poly, extendedBox);
 	for (int i=0; i<poly.size(); i++) 
 		poly[i].draw(writer);
 
@@ -290,7 +290,8 @@ void connectPoly(ImageWriter *writer, std::vector<PolyReader>& poly, double minD
 	}
 }
 
-void AjudaSimples() {
+/*
+void SimpleHelp() {
 
 	cout << "\nLucas Campos, Laboratório de Computação Científica, Departamento de Física, UFPE\n";
 	cout << "Em caso de bugs, por favor mande um email para lqcc@df.ufpe.br\n\n";  
@@ -306,4 +307,21 @@ void AjudaSimples() {
 	std::cout << " -r Distance\n\tDesenha uma linha entre particulas com distancia menor que Distance\n\n";
 	std::cout << " -e Extended Box\n\tA caixa vai de 0 a box, ao inves de -box a box.\n\n";
 	std::cout << " -w width\n\tEscolha a grossura das linhas. Por padrao, 5.\n\n";
+}
+*/
+void SimpleHelp() {
+	
+	cout << "If you find any bug, please write to lqcc@df.ufpe.br\n\n";
+	cout << "POPS: 2.00Alpha\n\n";	
+	std::cout << "Commands: \n\n";
+	std::cout << " -h\n\tShow this help dialog\n\n"; 
+	std::cout << " -s filename Quantidade\n\tAdd a new kind of square, with Quantity squares. To each square, there must be five lines on the file.\n\n";
+	std::cout << " -t filename Quantidade\n\tAdd a new kind of triangle, with Quantity triangles. To each triangle, there must be four lines on the file.\n\n";
+	std::cout << " -t filename Quantidade\n\tAdd a new kind of circle, with Quantity circles. To each circle, there must be one line on the file.\n\n";
+	std::cout << " -o Name\n\tOutput filename.\n\n";
+	std::cout << " -f Frame\n\tChooses the resolution of the output file. If this flag is not set, the resolution will be 1920x1920.\n\n";
+	std::cout << " -b Box\n\tBox size. If unset, the value will be 10.\n\n";
+	std::cout << " -r Distance\n\tDesenha draw a line between particle centers' if they are close than Distance.\n\n";
+	std::cout << " -e\nThe standard is having the box centred on (0,0). If you wish its left-down corner to be on (0,0), set this flag.\t\n\n";
+	std::cout << " -w width\n\tChooses linewidth, relative to box size. The standard is 0.1 box.\n\n";
 }
