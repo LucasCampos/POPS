@@ -1,3 +1,30 @@
+/*
+ * Author:	Lucas Costa Campos
+ * Email: 	Rmk236@gmail.com
+ * Version:	0.92
+ * License:	GNU General Public License
+ * 		Copyright: 2013 Lucas Costa Campos
+ * Website: 	https://github.com/LucasCampos/libepswriter
+ */
+
+/*
+ *     This file is part of libepswriter.
+ *
+ *     libepswriter is free software; you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation; either version 3 of the License, or
+ *     (at your option) any later version.
+ * 
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ * 
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program; if not, write to the Free Software
+ *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * 
+ * */
 #include "epswriter.hpp"
 
 epswriter::epswriter(std::string fileName, double minX, double minY, double maxX, double maxY): name(fileName), currRed(0), currGreen(0), currBlue(0){
@@ -6,6 +33,8 @@ epswriter::epswriter(std::string fileName, double minX, double minY, double maxX
 
 	eps->open(fileName);
 	lineWidth = std::min(maxX-minX, maxY-minY)/20;
+	fontSize = std::min(maxX-minX, maxY-minY)/10;
+
 	//Writes *eps header
 	*eps << " %!PS-Adobe-3.0 *epsF-3.0 " << std::endl;
 	*eps << "%%Pages: 1" << std::endl;
@@ -15,6 +44,7 @@ epswriter::epswriter(std::string fileName, double minX, double minY, double maxX
 
 	*eps << "0 0 0 setrgbcolor" << std::endl << std::endl;
 	*eps << lineWidth << " setlinewidth " << std::endl;
+	*eps << "/Helvetica " << fontSize << " selectfont" << std::endl;
 
 }
 
@@ -31,9 +61,10 @@ bool epswriter::equalCurrColor(int r, int g, int b) {
 }
 
 void epswriter::changeColor(int r, int g, int b) {
-	if (!equalCurrColor(r,g,b))
+	if (!equalCurrColor(r,g,b)) {
 		*eps << r/65535.0 << " " << g/65535.0 << " " << b/65535.0 << " setrgbcolor" << std::endl;
-	currRed=r; currGreen=g; currBlue=b;
+		currRed=r; currGreen=g; currBlue=b;
+	}
 }
 
 double myAbs(double a){
@@ -123,4 +154,18 @@ void epswriter::circle(double xcentre, double ycentre, double radius, int red, i
 void epswriter::filledCircle(double xcentre, double ycentre, double radius, int red, int green, int blue) {
 	drawBasicCircle(xcentre, ycentre, radius, red, green, blue);
 	*eps << "fill" << std::endl;
+}
+
+
+void epswriter::writeText(double x, double y, std::string text, double font, int red, int green, int blue){
+
+	changeColor(red,green,blue);
+	
+	if (myAbs(font-fontSize) > 1e-4){
+		fontSize=font;
+		*eps << "/Helvetica " << fontSize << " selectfont" << std::endl;
+	}
+
+	*eps << x << " " << y << " moveto" << std::endl;
+	*eps << "(" << text <<") show" << std::endl;
 }
