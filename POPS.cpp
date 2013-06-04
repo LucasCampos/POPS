@@ -1,4 +1,3 @@
-#include <boost/shared_ptr.hpp>
 /*
  * Name:	POPS - Plotter of POPS Screens
  * Author:	Lucas Costa Campos
@@ -36,94 +35,12 @@
 #include "include/imageWriter.hpp"
 #include "include/polygon.hpp"
 #include "include/colorPicker.hpp"
+#include "include/polyReader.hpp"
 
 using namespace std;
 
-typedef boost::shared_ptr<std::ifstream>  IFStreamPtrType;
-typedef boost::shared_ptr<DrawablePolygon>  DrawablePolygonPtrType;
-
-int lineWidth = 10;
-
-struct PolyReader {
-	int _pointsPerPoly;
-	IFStreamPtrType _in;
-	bool _jump;
-	vector<DrawablePolygonPtrType> _poly;
-
-	PolyReader(int points, char* filename, bool jump, vector<DrawablePolygonPtrType> poly): 
-		_pointsPerPoly(points), _in(new std::ifstream(filename)), _poly(poly) {
-	};
-
-	void updatePoly() {
-		int size = _poly.size();
-		for (int i=0; i<size; i++) {
-			
-			double x,y;
-			(*_in) >> x >> y;
-
-			//std::cout << i << "   " <<  charLeitor << "\n";
-			
-			bool notEnd = ((x != 0) && (y != 0)) &&  !(_in->eof());
-			//notEnd = true;
-			if (notEnd) {
-				_poly[i]->_pos = Vector2D(x,y);
-				_poly[i]->_vertex.clear();
-			}
-			for (int j =0; j<_pointsPerPoly; j++) {
-				*_in >> x >> y;
-				if(notEnd) 
-					_poly[i]->_vertex.push_back(Vector2D(x,y));
-			}
-		}
-	};
-
-	void draw(ImageWriter *writer) {
-		int size = _poly.size();
-		//cout << size << endl;
-		for (int i=0; i<size; i++) 
-			_poly[i]->draw(writer);
-	};
-
-	void rescale (const double factor) {
-		int size = _poly.size();
-		//cout << size << endl;
-		for (int i=0; i<size; i++) 
-			_poly[i]->rescale(factor);
-	};
-
-	void translate (const Vector2D T) {
-		int size = _poly.size();
-		//cout << size << endl;
-		for (int i=0; i<size; i++) 
-			_poly[i]->translate(T);
-	};
-
-	void drawLines(ImageWriter *writer, vector<DrawablePolygonPtrType> p, const double distance, const int width) {
-
-		int nHere = _poly.size();
-		int nOther = p.size();
-
-		for (int i=0; i<nHere; i++) {
-			for(int j=0; j<nOther; j++) {
-
-				Vector2D r =_poly[i]->_pos-(p[j]->_pos);
-				//cout << r.norm() << " " << distance << std::endl;
-				double norm = r.norm();
-				if ((norm < distance) && (norm > 1e-5))
-					writer->line(_poly[i]->_pos.getX(), _poly[i]->_pos.getY(), p[j]->_pos.getX(), p[j]->_pos.getY(), 0.01, 0,0,0);
-
-
-
-			}
-		}
-	};
-};
-
-//Variaveis Globais
-char* font =  (char*)"/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf";
-
 void Normalize(ImageWriter* writer, std::vector<PolyReader>& poly, bool extendedBox);
-void TakeParameters(int argc, char* argv[], ImageWriter** writer, std::vector<PolyReader>& poly, bool& drawDistance, double& minDist, bool& extendedBox);
+void TakeParameters(int argc, char* argv[], ImageWriter** writer, std::vector<PolyReader>& poly, double& lineWidth, bool& drawDistance, double& minDist, bool& extendedBox);
 void Draw(ImageWriter* writer, std::vector<PolyReader>& poly, bool extendedBox, bool drawDistance, double minDist, double lineWidth);
 void connectPoly(ImageWriter *writer, std::vector<PolyReader>& poly, double minDist, double lineWidth);
 void SimpleHelp();
@@ -134,8 +51,9 @@ int main(int argc, char* argv[])
 	bool extendedBox = true;
 	bool drawDistance = false;
 	double minDist = 1e9;
+	double lineWidth = 0.1;
 	ImageWriter* writer;
-	TakeParameters(argc, argv, &writer, poly, drawDistance, minDist, extendedBox);
+	TakeParameters(argc, argv, &writer, poly, lineWidth, drawDistance, minDist, extendedBox);
 	writer->printname();
 	Draw(writer, poly, extendedBox, drawDistance, minDist, 0.1);
 	writer->close();
@@ -154,7 +72,7 @@ void Normalize(ImageWriter* writer, std::vector<PolyReader>& poly, bool extended
 	}
 };
 
-void TakeParameters (int argc, char* argv[], ImageWriter** writer, std::vector<PolyReader>& poly, bool& drawDistance, double& minDist, bool& extendedBox){
+void TakeParameters (int argc, char* argv[], ImageWriter** writer, std::vector<PolyReader>& poly, double& lineWidth, bool& drawDistance, double& minDist, bool& extendedBox){
 
 	bool hasOne = false;
 	std::string nameOutput;
