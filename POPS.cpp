@@ -250,4 +250,5 @@ void SimpleHelp() {
 	std::cout << " -r Distance\n\tDesenha draw a line between particle centers' if they are close than Distance.\n\n";
 	std::cout << " -e\nThe standard is having the box centred on (0,0). If you wish its left-down corner to be on (0,0), set this flag.\t\n\n";
 	std::cout << " -w width\n\tChooses linewidth, relative to box size. The standard is 0.1 box.\n\n";
+	std::cout << " -l name\n\tAdds a new label on the left-up side.\n\n";
 }
