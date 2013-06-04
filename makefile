@@ -18,6 +18,9 @@ $(EXECS): $(OBJECTS)
 .cpp.o: obj/
 	$(CC) -c $(SOURCES) -I $(FREETYPE_INCLUDE) $(CFLAGS) $(LIBS) 
 
+install: $(EXECS)
+	mv $(EXECS) /usr/bin
+
 clean:
 	/bin/rm -f *.o *.mod $(EXECS) *.gnu *.sh *.gif
 run: $(EXECS) 
