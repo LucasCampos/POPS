@@ -21,5 +21,5 @@ $(EXECS): $(OBJECTS)
 clean:
 	/bin/rm -f *.o *.mod $(EXECS) *.gnu *.sh *.gif
 run: $(EXECS) 
-	./pops -c test/conffinal.dat 5000 0.05 -b 10 -o test/saida.png -l "N=5000" -l "Yukawa" -l "Teste"
-	./pops -c test/conffinal.dat 5000 0.05 -b 10 -o test/saida.eps -l "N=5000" -l "Yukawa" -l "Teste"
+	./pops -c test/conffinal.dat 5000 0.05 -b 10 -o test/saida.png -l "N=5000" -l "Yukawa" -l "Teste" 
+	./pops -c test/conffinal.dat 5000 0.05 -b 10 -o test/saida.eps -l "N=5000" -l "Yukawa" -l "Teste" 

@@ -181,11 +181,17 @@ void TakeParameters (int argc, char* argv[], ImageWriter** writer, std::vector<P
 			extendedBox = false;
 		} else if (string(argv[i]) == "-l") {
 			if (argc <= i+1) {
-				cout << "Incomplete paramters for -l\n";
+				cout << "Incomplete parameters for -l\n";
 				exit(1);
 			}
 			std::string label(argv[i+1]);
 			toWrite.push_back(label);
+		} else if (string(argv[i]) == "-fs") {
+			if (argc <= i+1) {
+				cout << "Incomplete parameters for -fs\n";
+				exit(1);
+			}
+			fontSize = atof(argv[i+1]);
 		}
 	}
 	if (!hasOne) {
@@ -218,7 +224,7 @@ void Draw(ImageWriter* writer, std::vector<PolyReader>& poly, std::vector<std::s
 	if (drawDistance) 
 		connectPoly(writer, poly, minDist, lineWidth);
 	for (int i=0; i<toWrite.size(); i++) {
-		writer->writeText(.95*writer->left, (0.95-.025*fontSize - .1*fontSize*i)*writer->up, toWrite[i], fontSize, 0, 0, 0);
+		writer->writeText(.95*writer->left, (0.95-.05*fontSize - .1*fontSize*i)*writer->up, toWrite[i], fontSize, 0, 0, 0);
 	}
 }
 
@@ -251,4 +257,5 @@ void SimpleHelp() {
 	std::cout << " -e\nThe standard is having the box centred on (0,0). If you wish its left-down corner to be on (0,0), set this flag.\t\n\n";
 	std::cout << " -w width\n\tChooses linewidth, relative to box size. The standard is 0.1 box.\n\n";
 	std::cout << " -l name\n\tAdds a new label on the left-up side.\n\n";
+	std::cout << " -fs size\n\tSelects the new font size.\n\n";
 }
