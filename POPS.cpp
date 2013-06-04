@@ -40,22 +40,24 @@
 using namespace std;
 
 void Normalize(ImageWriter* writer, std::vector<PolyReader>& poly, bool extendedBox);
-void TakeParameters(int argc, char* argv[], ImageWriter** writer, std::vector<PolyReader>& poly, double& lineWidth, bool& drawDistance, double& minDist, bool& extendedBox);
-void Draw(ImageWriter* writer, std::vector<PolyReader>& poly, bool extendedBox, bool drawDistance, double minDist, double lineWidth);
+void TakeParameters(int argc, char* argv[], ImageWriter** writer, std::vector<PolyReader>& poly, std::vector<std::string>& toWrite, double& lineWidth, double& fontSize,  bool& drawDistance, double& minDist, bool& extendedBox);
+void Draw(ImageWriter* writer, std::vector<PolyReader>& poly, std::vector<std::string>& toWrite, bool extendedBox, bool drawDistance, double minDist, double lineWidth, double fontSize);
 void connectPoly(ImageWriter *writer, std::vector<PolyReader>& poly, double minDist, double lineWidth);
 void SimpleHelp();
 
 int main(int argc, char* argv[])
 {
 	std::vector<PolyReader> poly;
+	std::vector<std::string> toWrite;
 	bool extendedBox = true;
 	bool drawDistance = false;
 	double minDist = 1e9;
 	double lineWidth = 0.1;
+	double fontSize = 1.0;
 	ImageWriter* writer;
-	TakeParameters(argc, argv, &writer, poly, lineWidth, drawDistance, minDist, extendedBox);
+	TakeParameters(argc, argv, &writer, poly, toWrite, lineWidth, fontSize, drawDistance, minDist, extendedBox);
 	writer->printname();
-	Draw(writer, poly, extendedBox, drawDistance, minDist, 0.1);
+	Draw(writer, poly, toWrite, extendedBox, drawDistance, minDist, lineWidth, fontSize);
 	writer->close();
 }
 
@@ -72,7 +74,7 @@ void Normalize(ImageWriter* writer, std::vector<PolyReader>& poly, bool extended
 	}
 };
 
-void TakeParameters (int argc, char* argv[], ImageWriter** writer, std::vector<PolyReader>& poly, double& lineWidth, bool& drawDistance, double& minDist, bool& extendedBox){
+void TakeParameters (int argc, char* argv[], ImageWriter** writer, std::vector<PolyReader>& poly, std::vector<std::string>& toWrite, double& lineWidth, double& fontSize, bool& drawDistance, double& minDist, bool& extendedBox){
 
 	bool hasOne = false;
 	std::string nameOutput;
@@ -177,14 +179,14 @@ void TakeParameters (int argc, char* argv[], ImageWriter** writer, std::vector<P
 			exit(0);
 		} else if (string(argv[i]) == "-e"){
 			extendedBox = false;
-		}/* else if (string(argv[i]) == "-l") {
+		} else if (string(argv[i]) == "-l") {
 			if (argc <= i+1) {
-				cout << "Parametro -l incompleto\n";
+				cout << "Incomplete paramters for -l\n";
 				exit(1);
 			}
-			char *nome = argv[i+1];
-			aEscrever.push_back(nome);
-		}*/
+			std::string label(argv[i+1]);
+			toWrite.push_back(label);
+		}
 	}
 	if (!hasOne) {
 		SimpleHelp();
@@ -204,7 +206,7 @@ void TakeParameters (int argc, char* argv[], ImageWriter** writer, std::vector<P
 	}
 }
 
-void Draw(ImageWriter* writer, std::vector<PolyReader>& poly, bool extendedBox, bool drawDistance, double minDist, double lineWidth)
+void Draw(ImageWriter* writer, std::vector<PolyReader>& poly, std::vector<std::string>& toWrite, bool extendedBox, bool drawDistance, double minDist, double lineWidth, double fontSize)
 {
 	for (int i=0; i<poly.size(); i++) 
 		poly[i].updatePoly();
@@ -215,13 +217,9 @@ void Draw(ImageWriter* writer, std::vector<PolyReader>& poly, bool extendedBox, 
 
 	if (drawDistance) 
 		connectPoly(writer, poly, minDist, lineWidth);
-/*
-	for (int i=0; i<aEscrever.size(); i++) {
-		char *name=new char[aEscrever[i].size()+1];
-		name[aEscrever[i].size()]=0;
-		memcpy(name,aEscrever[i].c_str(),aEscrever[i].size());
-		png.plot_text(font, 90, (int)(0.05*window_width), (int)(0.9*window_height-170*i), 0., name, 0., 0., 0.);
-	}*/
+	for (int i=0; i<toWrite.size(); i++) {
+		writer->writeText(.95*writer->left, (0.95-.025*fontSize - .1*fontSize*i)*writer->up, toWrite[i], fontSize, 0, 0, 0);
+	}
 }
 
 void connectPoly(ImageWriter *writer, std::vector<PolyReader>& poly, double minDist, double lineWidth){

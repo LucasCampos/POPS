@@ -3,7 +3,7 @@ CC          = g++
 MAKE        = make
 SHELL       = /bin/sh
 
-CFLAGS  = -std=c++11
+CFLAGS  = -std=c++0x
 FOLDERS =
 FREETYPE_INCLUDE = /usr/include/freetype2 
 LIBS = -lpng -lz -lfreetype
@@ -21,5 +21,5 @@ $(EXECS): $(OBJECTS)
 clean:
 	/bin/rm -f *.o *.mod $(EXECS) *.gnu *.sh *.gif
 run: $(EXECS) 
-	./pops -c test/conffinal.dat 5000 0.05 -b 10 -o teste/saida.png -l "N=5000" 
-	./pops -c test/conffinal.dat 5000 0.05 -b 10 -o teste/saida.eps -l "N=5000" 
+	./pops -c test/conffinal.dat 5000 0.05 -b 10 -o test/saida.png -l "N=5000" -l "Yukawa" -l "Teste"
+	./pops -c test/conffinal.dat 5000 0.05 -b 10 -o test/saida.eps -l "N=5000" -l "Yukawa" -l "Teste"

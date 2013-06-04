@@ -29,6 +29,10 @@
 
 struct ImageWriter {
 
+	double left;
+	double right;
+	double up;
+	double down;
 
 	virtual double NormalizingFactor() const = 0;
 	virtual double Center() const =0;
@@ -43,6 +47,8 @@ struct ImageWriter {
 
 	virtual void circle(double xcentre, double ycentre, double radius, int red, int green, int blue)=0;
 	virtual void filledCircle(double xcentre, double ycentre, double radius, int red, int green, int blue)=0;
+
+	virtual void writeText(double x, double y, std::string name, double fontSize, int red, int green, int blue) =0;
 
 	virtual void printname()=0;
 	virtual void close()=0;
@@ -61,9 +67,11 @@ struct PNGWriter:ImageWriter {
 
 	public:
 
-		PNGWriter(int resolution_, double box_, std::string name):resolution(resolution_), box(box_){
+		PNGWriter(int resolution_, double box_, std::string name):resolution(resolution_), box(box_) {
 			png = pngwriter(resolution_, resolution_, 1.0, name.data());
 			normalizingFactor = resolution_/box_;
+			right = up = resolution_;
+			left = down = 0;
 		}
 
 		~PNGWriter() {
@@ -129,6 +137,14 @@ struct PNGWriter:ImageWriter {
 		void filledCircle(double xcentre, double ycentre, double radius, int red, int green, int blue) {
 			png.filledcircle(xcentre, ycentre, radius, red, green, blue);
 		}
+		void writeText(double x, double y, std::string name, double fontSize, int red, int green, int blue)  {
+			char* font = (char*)"/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf";
+			char buffer[2*name.length()];
+			std::size_t l = name.copy(buffer, name.length());
+			buffer[l]='\0';
+
+			png.plot_text(font, fontSize*normalizingFactor, x, y, 0.0, buffer, red,green,blue); 
+		};
 		void printname() {
 			std::cout << "Printing with pngwriter" << std::endl;
 		}
@@ -143,12 +159,14 @@ struct EPSWriter: public ImageWriter {
 		epswriter eps;
 		double minBox;
 		double maxBox;
-		double normalizingFactor;
 
 
 	public:
 
-		EPSWriter(double minBox_, double maxBox_, std::string name):minBox(minBox_), maxBox(maxBox_),eps(epswriter(name, minBox_, minBox_, maxBox_, maxBox_)){
+		EPSWriter(double minBox_, double maxBox_, std::string name):minBox(minBox_), maxBox(maxBox_),eps(epswriter(name, minBox_, minBox_, maxBox_, maxBox_)) {
+
+			left = down = minBox_;
+			right = up = maxBox_;
 
 		}
 
@@ -190,6 +208,9 @@ struct EPSWriter: public ImageWriter {
 		void filledCircle(double xcentre, double ycentre, double radius, int red, int green, int blue) {
 			eps.filledCircle(xcentre, ycentre, radius, red, green, blue);
 		}
+		void writeText(double x, double y, std::string name, double fontSize, int red, int green, int blue)  {
+			eps.writeText(x,y,name,fontSize*NormalizingFactor(), red,green,blue);
+		};
 		void printname() {
 			std::cout << "Printing with epswriter" << std::endl;
 		}
