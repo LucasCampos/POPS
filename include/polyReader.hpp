@@ -18,7 +18,6 @@
  * */
 #ifndef POLYREADER_HPP
 #define POLYREADER_HPP
-#include <boost/shared_ptr.hpp>
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
@@ -28,8 +27,8 @@
 #include "imageWriter.hpp"
 #include "polygon.hpp"
 
-typedef boost::shared_ptr<std::ifstream>  IFStreamPtrType;
-typedef boost::shared_ptr<DrawablePolygon>  DrawablePolygonPtrType;
+typedef std::shared_ptr<std::ifstream>  IFStreamPtrType;
+typedef std::shared_ptr<DrawablePolygon>  DrawablePolygonPtrType;
 
 struct PolyReader {
 	int _pointsPerPoly;
