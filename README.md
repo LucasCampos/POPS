@@ -94,3 +94,9 @@ Adds a new label on the left-up side.
 Selects the new font size.
 
 #Example of usage
+
+```bash
+ pops -c test/conffinal.dat 5000 0.05 -b 10 -o test/saida.png -l "N=5000" -l "Yukawa" -l "Teste" 
+ ```
+ 
+ This line will plot the data in the file test/conffinal.dat. It will generate 5000 circles, each with radius 0.05. The box will be from (-10, -10) to (10, 10), with three labels appearing on the right-upper corner, "N=5000", "Yukawa" and "Teste".
