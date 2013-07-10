@@ -84,7 +84,7 @@ struct PolyReader {
 			_poly[i]->translate(T);
 	};
 
-	void drawLines(ImageWriter *writer, std::vector<DrawablePolygonPtrType> p, const double distance, const int width) {
+	void drawLines(ImageWriter *writer, std::vector<DrawablePolygonPtrType> p, const double distance, const double width) {
 
 		int nHere = _poly.size();
 		int nOther = p.size();
@@ -96,7 +96,7 @@ struct PolyReader {
 				//cout << r.norm() << " " << distance << std::endl;
 				double norm = r.norm();
 				if ((norm < distance) && (norm > 1e-5))
-					writer->line(_poly[i]->_pos.getX(), _poly[i]->_pos.getY(), p[j]->_pos.getX(), p[j]->_pos.getY(), 0.01, 0,0,0);
+					writer->line(_poly[i]->_pos.getX(), _poly[i]->_pos.getY(), p[j]->_pos.getX(), p[j]->_pos.getY(), width, 0,0,0);
 
 
 

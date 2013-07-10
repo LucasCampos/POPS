@@ -173,7 +173,7 @@ void TakeParameters (int argc, char* argv[], ImageWriter** writer, std::vector<P
 				exit(1);
 			}
 
-			lineWidth = atoi(argv[i+1]);
+			lineWidth = atof(argv[i+1]);
 		} else if (string(argv[i]) == "-h") {
 			SimpleHelp();
 			exit(0);
@@ -238,6 +238,7 @@ void connectPoly(ImageWriter *writer, std::vector<PolyReader>& poly, double minD
 			poly[i].drawLines(writer, poly[j]._poly, minDist, lineWidth);
 		}
 	}
+	std::cout << lineWidth << std::endl;
 }
 
 
@@ -249,13 +250,13 @@ void SimpleHelp() {
 	std::cout << " -h\n\tShow this help dialog\n\n"; 
 	std::cout << " -s filename Quantidade\n\tAdd a new kind of square, with Quantity squares. To each square, there must be five lines on the file.\n\n";
 	std::cout << " -t filename Quantidade\n\tAdd a new kind of triangle, with Quantity triangles. To each triangle, there must be four lines on the file.\n\n";
-	std::cout << " -t filename Quantidade\n\tAdd a new kind of circle, with Quantity circles. To each circle, there must be one line on the file.\n\n";
+	std::cout << " -c filename Quantidade Radius\n\tAdd a new kind of circle, with Quantity circles and a given radius. To each circle, there must be one line on the file.\n\n";
 	std::cout << " -o Name\n\tOutput filename.\n\n";
 	std::cout << " -f Frame\n\tChooses the resolution of the output file. If this flag is not set, the resolution will be 1920x1920.\n\n";
 	std::cout << " -b Box\n\tBox size. If unset, the value will be 10.\n\n";
 	std::cout << " -r Distance\n\tDesenha draw a line between particle centers' if they are close than Distance.\n\n";
 	std::cout << " -e\nThe standard is having the box centred on (0,0). If you wish its left-down corner to be on (0,0), set this flag.\t\n\n";
-	std::cout << " -w width\n\tChooses linewidth, relative to box size. The standard is 0.1 box.\n\n";
+	std::cout << " -w width\n\tChooses linewidth. The standard is 0.1.\n\n";
 	std::cout << " -l name\n\tAdds a new label on the left-up side.\n\n";
 	std::cout << " -fs size\n\tSelects the new font size.\n\n";
 }
