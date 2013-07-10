@@ -5,6 +5,15 @@ POPS generates images from an input file, containing bidimensional particles. Th
 
 It can draw figures in png and eps format.
 
+#Example of usage
+
+```bash
+ pops -c test/conffinal.dat 5000 0.05 -b 10 -o test/saida.png -l "N=5000" -l "Yukawa" -l "Teste" 
+ ```
+ 
+This line will plot the data in the file test/conffinal.dat. It will generate 5000 circles, each with radius 0.05. The box will be from (-10, -10) to (10, 10), with three labels appearing on the right-upper corner, "N=5000", "Yukawa" and "Teste".
+
+
 #Compiling
 
 To compile POPS, one will need png and freetype libraries. On Ubuntu, these can be installed using
@@ -49,7 +58,7 @@ Add a new kind of square, with Quantity squares. To each square, there must be f
 Add a new kind of triangle, with Quantity triangles. To each triangle, there must be four lines on the file.
 
 ```bash
- -t filename Quantidade
+ -c filename Quantidade Radius
 ```
 Add a new kind of circle, with Quantity circles. To each circle, there must be one line on the file.
   
@@ -93,10 +102,3 @@ Adds a new label on the left-up side.
 ```
 Selects the new font size.
 
-#Example of usage
-
-```bash
- pops -c test/conffinal.dat 5000 0.05 -b 10 -o test/saida.png -l "N=5000" -l "Yukawa" -l "Teste" 
- ```
- 
- This line will plot the data in the file test/conffinal.dat. It will generate 5000 circles, each with radius 0.05. The box will be from (-10, -10) to (10, 10), with three labels appearing on the right-upper corner, "N=5000", "Yukawa" and "Teste".
