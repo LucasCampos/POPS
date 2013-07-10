@@ -224,7 +224,7 @@ void Draw(ImageWriter* writer, std::vector<PolyReader>& poly, std::vector<std::s
 	if (drawDistance) 
 		connectPoly(writer, poly, minDist, lineWidth);
 	for (int i=0; i<toWrite.size(); i++) {
-		writer->writeText(.95*writer->left, (0.95-.05*fontSize - .1*fontSize*i)*writer->up, toWrite[i], fontSize, 0, 0, 0);
+		writer->writeText(.95*writer->left, (0.97-.05*fontSize - .1*fontSize*i)*writer->up, toWrite[i], fontSize, 0, 0, 0);
 	}
 }
 

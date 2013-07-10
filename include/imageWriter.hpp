@@ -163,10 +163,10 @@ struct EPSWriter: public ImageWriter {
 
 	public:
 
-		EPSWriter(double minBox_, double maxBox_, std::string name):minBox(minBox_), maxBox(maxBox_),eps(epswriter(name, minBox_, minBox_, maxBox_, maxBox_)) {
+		EPSWriter(double minBox_, double maxBox_, std::string name):minBox(0), maxBox(maxBox_-minBox_),eps(epswriter(name, 0,0, maxBox_-minBox_, maxBox_-minBox_)) {
 
-			left = down = minBox_;
-			right = up = maxBox_;
+			left = down = 0;
+			right = up = maxBox_-minBox_;
 
 		}
 
