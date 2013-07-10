@@ -238,7 +238,6 @@ void connectPoly(ImageWriter *writer, std::vector<PolyReader>& poly, double minD
 			poly[i].drawLines(writer, poly[j]._poly, minDist, lineWidth);
 		}
 	}
-	std::cout << lineWidth << std::endl;
 }
 
 
