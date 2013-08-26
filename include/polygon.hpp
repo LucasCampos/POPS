@@ -28,6 +28,14 @@
 #include <cstdlib>
 #include "imageWriter.hpp"
 
+/*
+ *
+ * Creates a general polygon, a drawable polygon, 
+ * and some kinds, such as circles and
+ * squares.
+ *
+ */
+
 class Polygon {
 
 	public:
@@ -61,6 +69,13 @@ class Polygon {
 
 
 };
+
+/*
+ *
+ * A drawable polygon. This cannot be intantiate unless the
+ * draw method is overloaded.
+ *
+ * */
 
 class DrawablePolygon: public Polygon {
 

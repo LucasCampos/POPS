@@ -21,6 +21,13 @@
 
 #include <cmath>
 
+/*
+ *
+ * Defines 2D and 3D algebric vectors and its 
+ * operations.
+ *
+ */
+
 class Vector2D
 	{
 	private:

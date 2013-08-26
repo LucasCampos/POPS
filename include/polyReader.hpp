@@ -27,6 +27,12 @@
 #include "imageWriter.hpp"
 #include "polygon.hpp"
 
+/*
+ *
+ * This defines a class to handle the handling of data
+ *
+ */
+
 typedef std::shared_ptr<std::ifstream>  IFStreamPtrType;
 typedef std::shared_ptr<DrawablePolygon>  DrawablePolygonPtrType;
 
@@ -40,6 +46,7 @@ struct PolyReader {
 		_pointsPerPoly(points), _in(new std::ifstream(filename)), _poly(poly) {
 	};
 
+	//Read the next block of data. Commonly, it will be called only once
 	void updatePoly() {
 		int size = _poly.size();
 		for (int i=0; i<size; i++) {
@@ -63,6 +70,7 @@ struct PolyReader {
 		}
 	};
 
+	//Call the drawing method of each polygon
 	void draw(ImageWriter *writer) {
 		int size = _poly.size();
 		//cout << size << endl;
@@ -70,6 +78,7 @@ struct PolyReader {
 			_poly[i]->draw(writer);
 	};
 
+	//Rescale each polygon by a constant factor
 	void rescale (const double factor) {
 		int size = _poly.size();
 		//cout << size << endl;
@@ -84,6 +93,7 @@ struct PolyReader {
 			_poly[i]->translate(T);
 	};
 
+	//Draw lines between all particles that are within a certain distance
 	void drawLines(ImageWriter *writer, std::vector<DrawablePolygonPtrType> p, const double distance, const double width) {
 
 		int nHere = _poly.size();
