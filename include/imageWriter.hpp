@@ -16,6 +16,18 @@
  *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * 
  * */
+
+/*
+ *
+ * This file sets the interface to imageWriter, and creates two instances,
+ * one to write eps files, and one to write png files. 
+ *
+ * The imageWriter is needed abstract the specific interfaces of several 
+ * image writing libraries. Indeed, if one wants to extend the available
+ * formats to say, jpeg, one must create a imageWriter version to jpeg.
+ *
+ * */
+
 #ifndef IMAGEWRITER_HPP
 #define IMAGEWRITER_HPP
 
@@ -26,6 +38,12 @@
 #include "vectorND.hpp"
 #include "../libpngwriter/pngwriter.h"
 #include "../libepswriter/epswriter.hpp"
+
+/*
+ *
+ * General interface. One cannot instantiate a ImageWriter
+ *
+ * */
 
 struct ImageWriter {
 
@@ -53,6 +71,12 @@ struct ImageWriter {
 	virtual void printname()=0;
 	virtual void close()=0;
 };
+
+/*
+ *
+ * A implementation of ImageWriter to make png files.
+ *
+ * */
 
 struct PNGWriter:ImageWriter {
 	private:
@@ -153,6 +177,12 @@ struct PNGWriter:ImageWriter {
 		}
 
 };
+
+/*
+ *
+ * Implementation of ImageWrite, to make eps images
+ *
+ * */
 
 struct EPSWriter: public ImageWriter {
 	private:
