@@ -253,8 +253,8 @@ void SimpleHelp() {
 	std::cout << " -o Name\n\tOutput filename.\n\n";
 	std::cout << " -f Frame\n\tChooses the resolution of the output file. If this flag is not set, the resolution will be 1920x1920.\n\n";
 	std::cout << " -b Box\n\tBox size. If unset, the value will be 10.\n\n";
-	std::cout << " -r Distance\n\tDesenha draw a line between particle centers' if they are close than Distance.\n\n";
-	std::cout << " -e\nThe standard is having the box centred on (0,0). If you wish its left-down corner to be on (0,0), set this flag.\t\n\n";
+	std::cout << " -r Distance\n\tDraw a line between particle centers' if they are close than Distance.\n\n";
+	std::cout << " -e\n\tThe standard is having the box centred on (0,0). If you wish its left-down corner to be on (0,0), set this flag.\t\n\n";
 	std::cout << " -w width\n\tChooses linewidth. The standard is 0.1.\n\n";
 	std::cout << " -l name\n\tAdds a new label on the left-up side.\n\n";
 	std::cout << " -fs size\n\tSelects the new font size.\n\n";
