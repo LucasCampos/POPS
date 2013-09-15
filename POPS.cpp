@@ -37,6 +37,14 @@
 #include "include/colorPicker.hpp"
 #include "include/polyReader.hpp"
 
+#ifndef SKIPPNG
+#include "include/PNGWriter.hpp"
+#endif
+
+#ifndef SKIPEPS
+#include "include/EPSWriter.hpp"
+#endif
+
 using namespace std;
 
 void Normalize(ImageWriter* writer, std::vector<PolyReader>& poly, bool extendedBox);
@@ -199,17 +207,30 @@ void TakeParameters (int argc, char* argv[], ImageWriter** writer, std::vector<P
 		exit(1);
 	}
 
-	if (nameOutput.substr(nameOutput.length()-4) == ".png")
+	std::string extension = nameOutput.substr(nameOutput.length()-4);
+	if (false) 
+		int a;
+#ifndef SKIPPNG
+	else if (extension == ".png")
 		*writer = new PNGWriter(resolution, (extendedBox?2:1)*box, nameOutput);
-	else{
-		if (!(nameOutput.substr(nameOutput.length()-4) == ".eps"))
-			nameOutput+=".eps";
-		if (extendedBox)
-			*writer = new EPSWriter(-box, box, nameOutput);
-		else
-			*writer = new EPSWriter(0, box, nameOutput);
+#endif
+#ifndef SKIPEPS
+	else if (extension == ".eps") 
+		*writer = new EPSWriter((extendedBox?-1:0)*box, box, nameOutput);
+#endif
 
+	else {
+		std::cout << "Please, define an extension. Currently compiled in POPS you have:" << std::endl;
+#ifndef SKIPPNG
+		std::cout << "\t-> png" << std::endl;
+#endif
+#ifndef SKIPEPS
+		std::cout << "\t-> eps" << std::endl;
+#endif
+		exit(1);
 	}
+		
+
 }
 
 void Draw(ImageWriter* writer, std::vector<PolyReader>& poly, std::vector<std::string>& toWrite, bool extendedBox, bool drawDistance, double minDist, double lineWidth, double fontSize)

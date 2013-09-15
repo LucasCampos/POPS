@@ -24,6 +24,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <memory>
 #include "imageWriter.hpp"
 #include "polygon.hpp"
 
