@@ -265,7 +265,7 @@ void connectPoly(ImageWriter *writer, std::vector<PolyReader>& poly, double minD
 void SimpleHelp() {
 	
 	cout << "If you find any bug, please write to lqcc@df.ufpe.br\n\n";
-	cout << "POPS: 2.00Alpha\n\n";	
+	cout << "POPS: 2.01Alpha\n\n";	
 	std::cout << "Commands: \n\n";
 	std::cout << " -h\n\tShow this help dialog\n\n"; 
 	std::cout << " -s filename Quantidade\n\tAdd a new kind of square, with Quantity squares. To each square, there must be five lines on the file.\n\n";
