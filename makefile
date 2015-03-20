@@ -6,9 +6,9 @@ FOLDERS =
 FREETYPE_INCLUDE = /usr/include/freetype2 
 LIBS = -lpng -lz -lfreetype
 EXECS = pops
-SOURCES = POPS.cpp  libepswriter/epswriter.cpp #libpngwriter/pngwriter.cpp
-CXXFLAGS= -std=c++11 -D SKIPPNG
-OBJECTS = POPS.o epswriter.o #libpngwriter/pngwriter.cpp
+SOURCES = POPS.cpp  libepswriter/epswriter.cpp libpngwriter/pngwriter.cpp
+CXXFLAGS= -std=c++11
+OBJECTS = POPS.o epswriter.o libpngwriter/pngwriter.cpp
 
 $(EXECS): $(OBJECTS)
 	$(CC) $(OBJECTS) -o $@ -I $(FREETYPE_INCLUDE) $(CXXFLAGS) $(LIBS) 
